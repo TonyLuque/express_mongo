@@ -1,11 +1,23 @@
-const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const APP_SECRET = process.env.SECRET;
+const User = require("./model");
 
-const userSchema = new mongoose.Schema(
-  {
-    email: String,
-    password: String,
-  },
-  { timestamps: true }
-);
+async function login(req, res) {
+  try {
+    console.log(req.body);
+    let user = new User({
+      email: req.body.email,
+      password: req.body.password,
+    });
+    let result = await user.save();
+    res.status(200).json(result);
+  } catch (error) {
+    console.error("dfadfadf  ", error.message);
+    res.status(500).json({ error: error.message });
+  }
+}
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = {
+  login,
+};

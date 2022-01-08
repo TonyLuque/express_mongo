@@ -1,14 +1,15 @@
 const express = require("express");
 const app = express();
+const bodyParser = require("body-parser");
 
 require("dotenv").config();
-
-const PORT = process.env.PORT;
-
 require("./database");
 
+const PORT = process.env.PORT;
 const userRoutes = require("./users/view");
 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use("/user", userRoutes);
 
 app.get("/*", (req, res) => {
