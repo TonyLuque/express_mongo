@@ -6,21 +6,22 @@ const Profile = require("../profile/model");
 
 async function create(req) {
   try {
-    let profile = new Profile({
+    let profile = await Profile.create({
       firstName: req.body.firstName,
       secondName: req.body.secondName,
       lastName: req.body.lastName,
       secondLastName: req.body.secondLastName,
     });
-    let user = new User({
+    let user = await User.create({
       email: req.body.email,
       password: req.body.password,
       profile: profile._id,
     });
-
-    const resultUser = await user.save();
-    const resultProfile = await profile.save();
-
+    console.log("Se creo el usuario: ", {
+      id: user._id,
+      nombre: profile.firstName,
+      email: user.email,
+    });
     return "User create success";
   } catch (error) {
     console.error("Error create controller | ", error.message);

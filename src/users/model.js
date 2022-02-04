@@ -10,4 +10,15 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+userSchema.static({
+  create: async function (data) {
+    try {
+      const user = new this(data);
+      return await user.save();
+    } catch (error) {
+      console.error("Error model create | ", error.message);
+    }
+  },
+});
+
 module.exports = mongoose.model("User", userSchema);

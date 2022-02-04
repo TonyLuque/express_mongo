@@ -11,4 +11,15 @@ const profileSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+profileSchema.static({
+  create: async function (data) {
+    try {
+      const profile = new this(data);
+      return await profile.save();
+    } catch (error) {
+      console.error("Error model create | ".error.message);
+    }
+  },
+});
+
 module.exports = mongoose.model("Profile", profileSchema);
