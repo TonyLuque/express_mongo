@@ -1,6 +1,5 @@
 const express = require("express");
 const app = express();
-const path = require("path");
 const bodyParser = require("body-parser");
 
 require("dotenv").config();
@@ -16,10 +15,6 @@ app.use("/user", userRoutes);
 
 app.get("/", function (req, res) {
   res.render("index.html");
-});
-
-app.post("/", (req, res) => {
-  console.log("body: ", req.body.user_mail);
 });
 
 app.get("/*", (req, res) => {
