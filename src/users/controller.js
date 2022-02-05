@@ -31,8 +31,14 @@ async function create(req) {
 
 async function login(req) {
   try {
+    const { user_email, user_password } = req.body;
     console.log(req.body);
-    return "logueo correcto";
+    const user = await User.get({ email: user_email });
+    if (user.password === user_password) {
+      return true;
+    } else {
+      return false;
+    }
   } catch (error) {
     console.error("Error: ", error.message);
     throw new Error(error);
