@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const APP_SECRET = process.env.SECRET;
 const User = require("./model");
 
-async function create(req, res) {
+async function create(req) {
   try {
     console.log(req.body);
     let user = new User({
@@ -11,30 +11,30 @@ async function create(req, res) {
       password: req.body.password,
     });
     let result = await user.save();
-    res.status(200).json(result);
+    return result;
   } catch (error) {
     console.error("Error: ", error.message);
-    res.status(500).json({ error: error.message });
+    throw new Error(error);
   }
 }
 
-async function login(req, res) {
+async function login(req) {
   try {
     console.log(req.body);
-    res.status(200).json("logueo correcto");
+    return "logueo correcto";
   } catch (error) {
     console.error("Error: ", error.message);
-    res.status(500).json({ error: error.message });
+    throw new Error(error);
   }
 }
 
-async function getAll(req, res) {
+async function getAll(req) {
   try {
     const result = await User.find({});
-    res.status(200).json(result);
+    return result;
   } catch (error) {
     console.error("Error: ", error.message);
-    res.status(500).json({ error: error.message });
+    throw new Error(error);
   }
 }
 
