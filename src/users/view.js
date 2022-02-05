@@ -12,14 +12,19 @@ router.get("/", (req, res) => {
   }
 });
 
-router.post("/create", (req, res) => {
-  const result = create(req.body);
-  res.status(201).json(result);
-});
-
 router.post("/login", (req, res) => {
   const result = login(req.body);
   res.status(200).json(result);
+});
+
+router.post("/create", async (req, res) => {
+  try {
+    const result = await create(req);
+    res.status(201).json(result);
+  } catch (error) {
+    console.error("Error /create view (users) | ", error);
+    res.status(500).json({ error: error.message });
+  }
 });
 
 module.exports = router;
