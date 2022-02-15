@@ -16,7 +16,8 @@ userSchema.static({
       const user = new this(data);
       return await user.save();
     } catch (error) {
-      console.error("Error model create | ", error.message);
+      console.error("Error model create | ", error);
+      throw new Error(error.message);
     }
   },
 });

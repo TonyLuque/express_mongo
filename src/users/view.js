@@ -14,6 +14,15 @@ router.post("/create", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-router.post("/login", login);
+
+router.post("/login", async (req, res) => {
+  try {
+    const result = await login(req);
+    res.status(200).json(result);
+  } catch (error) {
+    console.error("Error /login view (users) | ", error);
+    res.status(500).json({ error: error.message });
+  }
+});
 
 module.exports = router;

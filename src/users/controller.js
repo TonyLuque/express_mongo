@@ -1,4 +1,5 @@
 const bcrypt = require("bcryptjs");
+const saltRounds = 10;
 const jwt = require("jsonwebtoken");
 const APP_SECRET = process.env.SECRET;
 const User = require("./model");
@@ -6,6 +7,14 @@ const Profile = require("../profile/model");
 
 async function create(req) {
   try {
+    console.log(req.body);
+    const userExist = User.findOne({ email: req.body.email });
+    if (userExist) {
+      throw new Error("User already exist");
+    }
+
+    const hashPassword = await bcrypt.hash(req.body.password, saltRounds);
+    console.log("====", hashPassword);
     let profile = await Profile.create({
       firstName: req.body.firstName,
       secondName: req.body.secondName,
@@ -14,7 +23,7 @@ async function create(req) {
     });
     let user = await User.create({
       email: req.body.email,
-      password: req.body.password,
+      password: hashPassword,
       profile: profile._id,
     });
     console.log("Se creo el usuario: ", {
@@ -24,7 +33,7 @@ async function create(req) {
     });
     return "User create success";
   } catch (error) {
-    console.error("Error create controller | ", error.message);
+    console.error("Error create controller | ", error);
     throw new Error(error.message);
   }
 }
@@ -32,10 +41,20 @@ async function create(req) {
 async function login(req, res) {
   try {
     console.log(req.body);
-    res.status(200).json("logueo correcto");
+    const { email, password } = req.body;
+    const user = await User.findOne({ email: email });
+    const samePassword = await bcrypt.compare(password, user.password);
+
+    if (samePassword) {
+      console.log("estas logueado");
+      return "token";
+    } else {
+      console.log("los pass no coinciden");
+      return false;
+    }
   } catch (error) {
     console.error(error);
-    // throw new Error(error);
+    throw new Error(error.message);
   }
 }
 

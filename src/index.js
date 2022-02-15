@@ -13,9 +13,9 @@ app.use(bodyParser.json());
 app.use(express.static(__dirname + "/"));
 app.use("/user", userRoutes);
 
-app.get("/", function (req, res) {
-  res.render("index.html");
-});
+// app.get("/", function (req, res) {
+//   res.render("index.html");
+// });
 
 app.get("/*", (req, res) => {
   res.send("Hola Juy");
