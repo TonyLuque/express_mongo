@@ -10,7 +10,7 @@ const userRoutes = require("./users/view");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(express.static(__dirname + "/"));
+app.use(express.static(__dirname + "/public"));
 app.use("/user", userRoutes);
 
 // app.get("/", function (req, res) {

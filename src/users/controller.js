@@ -38,8 +38,9 @@ async function create(req) {
   }
 }
 
-async function login(req, res) {
+async function login(req) {
   try {
+    const { user_email, user_password } = req.body;
     console.log(req.body);
     const { email, password } = req.body;
     const user = await User.findOne({ email: email });
@@ -58,12 +59,12 @@ async function login(req, res) {
   }
 }
 
-async function getAll(req, res) {
+async function getAll(req) {
   try {
     const result = await User.find({});
-    res.status(200).json(result);
+    return result;
   } catch (error) {
-    console.error(error);
+    console.error("Error: ", error.message);
     throw new Error(error);
   }
 }
