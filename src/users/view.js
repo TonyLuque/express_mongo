@@ -1,14 +1,15 @@
 const { Router } = require("express");
 const router = Router();
-
+const RutasProtegidas = require("../utils/RutasProtegidas");
 const { login, create, getAll } = require("./controller");
 
-router.get("/", (req, res) => {
+router.get("/", RutasProtegidas, async (req, res) => {
   try {
-    const result = getAll(req);
+    const result = await getAll(req);
     res.status(200).json(result);
   } catch (error) {
-    console.error(error);
+    console.error("Error view getAll | ", error);
+    res.status(500).json({ error: error.message });
   }
 });
 

@@ -56,8 +56,8 @@ async function login(req) {
       console.log(`El usuario con el email ${user.email} se logueo con exito`);
       return token;
     } else {
-      console.log(`Las credenciales del usuario ${user.email} no coincides`);
-      throw new Error("Las credenciales no coincides");
+      console.log(`Las credenciales del usuario ${user.email} no coinciden`);
+      throw new Error("Las credenciales no coinciden");
     }
   } catch (error) {
     console.error(error);
@@ -67,10 +67,10 @@ async function login(req) {
 
 async function getAll(req) {
   try {
-    const result = await User.find({});
+    const result = await User.getAll({});
     return result;
   } catch (error) {
-    console.error("Error: ", error.message);
+    console.error("Error controller getAll | ", error);
     throw new Error(error);
   }
 }

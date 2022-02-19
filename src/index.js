@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
+const RutasProtegidas = require("./utils/RutasProtegidas");
 
 require("dotenv").config();
 require("./database");
@@ -13,7 +14,8 @@ app.use(bodyParser.json());
 
 app.use("/user", userRoutes);
 
-app.get("/", function (req, res) {
+app.get("/", RutasProtegidas, function (req, res) {
+  console.log(req.decoded);
   res.json("oa");
 });
 

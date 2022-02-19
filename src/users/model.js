@@ -20,6 +20,14 @@ userSchema.static({
       throw new Error(error.message);
     }
   },
+  getAll: async function (query) {
+    try {
+      return await this.find(query, { password: 0 });
+    } catch (error) {
+      console.error("Error model getAll | ", error);
+      throw new Error(error.message);
+    }
+  },
 });
 
 module.exports = mongoose.model("User", userSchema);
