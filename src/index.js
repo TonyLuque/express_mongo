@@ -10,12 +10,12 @@ const userRoutes = require("./users/view");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(express.static(__dirname + "/public"));
+// app.use(express.static(__dirname + "/public"));
 app.use("/user", userRoutes);
 
-// app.get("/", function (req, res) {
-//   res.render("index.html");
-// });
+app.get("/", function (req, res) {
+  res.sendFile(__dirname + "/public/login.html");
+});
 
 app.get("/*", (req, res) => {
   res.send("Hola Juy");

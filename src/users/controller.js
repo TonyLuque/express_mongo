@@ -7,14 +7,12 @@ const Profile = require("../profile/model");
 
 async function create(req) {
   try {
-    console.log(req.body);
     const userExist = User.findOne({ email: req.body.email });
     if (userExist) {
       throw new Error("User already exist");
     }
 
     const hashPassword = await bcrypt.hash(req.body.password, saltRounds);
-    console.log("====", hashPassword);
     let profile = await Profile.create({
       firstName: req.body.firstName,
       secondName: req.body.secondName,
@@ -40,18 +38,26 @@ async function create(req) {
 
 async function login(req) {
   try {
-    const { user_email, user_password } = req.body;
     console.log(req.body);
     const { email, password } = req.body;
     const user = await User.findOne({ email: email });
+
+    if (!user) throw new Error("Las credenciales no coincides");
+
     const samePassword = await bcrypt.compare(password, user.password);
 
     if (samePassword) {
-      console.log("estas logueado");
-      return "token";
+      const payload = {
+        email: user.email,
+      };
+      const token = jwt.sign(payload, APP_SECRET, {
+        expiresIn: 1440,
+      });
+      console.log(`El usuario con el email ${user.email} se logueo con exito`);
+      return token;
     } else {
-      console.log("los pass no coinciden");
-      return false;
+      console.log(`Las credenciales del usuario ${user.email} no coincides`);
+      throw new Error("Las credenciales no coincides");
     }
   } catch (error) {
     console.error(error);
