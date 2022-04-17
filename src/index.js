@@ -20,7 +20,12 @@ const swaggerSpec = {
     },
     servers: [
       {
-        url: "https://express-mo.herokuapp.com/api/",
+        url: "https://express-mo.herokuapp.com/",
+        description: "Servidor desplegado",
+      },
+      {
+        url: "http://localhost:3000/",
+        description: "Servidor local",
       },
     ],
   },
@@ -32,6 +37,19 @@ const userRoutes = require("./users/view");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+// Configurar cabeceras y cors
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method"
+  );
+  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+  res.header("Allow", "GET, POST, OPTIONS, PUT, DELETE");
+  next();
+});
+
 app.use(
   "/api-docs",
   swaggerUI.serve,
@@ -45,9 +63,9 @@ app.get("/", RutasProtegidas, function (req, res) {
   res.json("oa");
 });
 
-app.get("/*", (req, res) => {
-  res.send("Hola Juy");
-});
+// app.get("/*", (req, res) => {
+//   res.send("Hola Juy");
+// });
 
 app.listen(PORT, () => {
   console.log(`Listening at port ${PORT}`);

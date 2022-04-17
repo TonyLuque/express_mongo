@@ -7,7 +7,7 @@ const Profile = require("../profile/model");
 
 async function create(req) {
   try {
-    const userExist = User.findOne({ email: req.body.email });
+    const userExist = await User.findOne({ email: req.body.email });
     if (userExist) {
       throw new Error("User already exist");
     }
@@ -65,6 +65,25 @@ async function login(req) {
   }
 }
 
+async function changePassword(req) {
+  try {
+    const hashPassword = await bcrypt.hash(req.body.password, saltRounds);
+    const userExist = await User.findOneAndUpdate(
+      { email: req.body.email },
+      { password: hashPassword }
+    );
+
+    if (userExist) {
+      return "Passwor change succes";
+    } else {
+      throw new Error("User not found");
+    }
+  } catch (error) {
+    console.error(error);
+    throw new Error(error.message);
+  }
+}
+
 async function getAll(req) {
   try {
     const result = await User.getAll({});
@@ -79,4 +98,5 @@ module.exports = {
   login,
   create,
   getAll,
+  changePassword,
 };
