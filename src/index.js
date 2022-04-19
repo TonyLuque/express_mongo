@@ -63,9 +63,9 @@ app.get("/", RutasProtegidas, function (req, res) {
   res.json("oa");
 });
 
-// app.get("/*", (req, res) => {
-//   res.send("Hola Juy");
-// });
+app.get("/*", (req, res) => {
+  res.send("Hola Juy");
+});
 
 app.listen(PORT, () => {
   console.log(`Listening at port ${PORT}`);
