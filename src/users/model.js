@@ -16,7 +16,15 @@ userSchema.static({
       const user = new this(data);
       return await user.save();
     } catch (error) {
-      console.error("Error model create | ", error);
+      console.error("Error model create |", error);
+      throw new Error(error.message);
+    }
+  },
+  get: async function (id) {
+    try {
+      return await this.findById(id, { password: 0 });
+    } catch (error) {
+      console.error("Error model get |", error);
       throw new Error(error.message);
     }
   },
@@ -24,7 +32,7 @@ userSchema.static({
     try {
       return await this.find(query, { password: 0 });
     } catch (error) {
-      console.error("Error model getAll | ", error);
+      console.error("Error model getAll |", error);
       throw new Error(error.message);
     }
   },

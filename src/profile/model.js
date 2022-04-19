@@ -17,7 +17,7 @@ profileSchema.static({
       const profile = new this(data);
       return await profile.save();
     } catch (error) {
-      console.error("Error model create | ".error.message);
+      console.error("Error model create | ", error.message);
     }
   },
 });

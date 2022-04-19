@@ -60,7 +60,7 @@ async function login(req) {
       throw new Error("Las credenciales no coinciden");
     }
   } catch (error) {
-    console.error(error);
+    console.error("Error controller login |", error);
     throw new Error(error.message);
   }
 }
@@ -79,17 +79,25 @@ async function changePassword(req) {
       throw new Error("User not found");
     }
   } catch (error) {
-    console.error(error);
+    console.error("Error controller change password |", error);
     throw new Error(error.message);
   }
 }
 
 async function getAll(req) {
   try {
-    const result = await User.getAll({});
-    return result;
+    return await User.getAll({});
   } catch (error) {
-    console.error("Error controller getAll | ", error);
+    console.error("Error controller getAll |", error);
+    throw new Error(error);
+  }
+}
+
+async function get(req) {
+  try {
+    return await User.get(req.params.id);
+  } catch (error) {
+    console.error("Error controller get |", error);
     throw new Error(error);
   }
 }
@@ -99,4 +107,5 @@ module.exports = {
   create,
   getAll,
   changePassword,
+  get,
 };
