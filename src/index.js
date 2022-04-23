@@ -50,7 +50,7 @@ app.use((req, res, next) => {
   res.header("Allow", "GET, POST, OPTIONS, PUT, DELETE");
   next();
 });
-
+console.log("oa");
 app.use(
   "/api-docs",
   swaggerUI.serve,
